@@ -15,7 +15,7 @@ const EditProfile: NextPage = () => {
       </div>
       <div className="space-y-1">
         <label htmlFor="email" className="text-sm font-medium text-gray-700">
-          Email Adress
+          Email Address
         </label>
         <div className="mt-1">
           <input
