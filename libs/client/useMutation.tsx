@@ -1,15 +1,18 @@
 import { useState } from "react";
 
-interface UseMutationState {
+interface UseMutationState<T> {
   loading: boolean;
-  data?: object;
+  data?: T;
   error?: object;
 }
+// T는 타입인수를 뜻함 입력값과 반환값의 타입을 명시하기 위해서 사용 제네릭 제네릭
 
-type UseMutationResult = [(data: any) => void, UseMutationState];
+type UseMutationResult<T> = [(data: any) => void, UseMutationState<T>];
 
-export default function useMutation(url: string): UseMutationResult {
-  const [state, setSate] = useState<UseMutationState>({
+export default function useMutation<T = any>(
+  url: string
+): UseMutationResult<T> {
+  const [state, setSate] = useState<UseMutationState<T>>({
     loading: false,
     data: undefined,
     error: undefined,

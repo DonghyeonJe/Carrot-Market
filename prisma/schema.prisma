@@ -2,22 +2,36 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  phone Int? @unique
-  email String? @unique
-  name String
-  avatar String?
-  createAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  phone     BigInt?  @unique
+  email     String?  @unique
+  name      String
+  avatar    String?
+  createAt  DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Token     Token[]
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  payload   String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  //cascade를 쓰면 부모 레코드를 삭제할때 자식 레코드도 삭제 한다. 
+  //Setnull의 경우에는 user값을 null로 바꾸고 token은 내버려둔다. 근데 여기서는 user가 없는 token은 필요 없으므로 사용하지 않는다.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
